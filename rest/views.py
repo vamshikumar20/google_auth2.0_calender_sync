@@ -57,10 +57,14 @@ def GoogleCalendarRedirectView(request):
     service = build("calendar", "v3", credentials=credentials)
     # Call the Sheets API
     calendar_list = service.calendarList().list().execute()
-    calendar_list_append = []
-    if not calendar_list['items']:
+    calendar_id = calendar_list['items'][0]['id']
+    events  = service.events().list(calendarId=calendar_id).execute()
+
+    events_list_append = []
+    if not events ['items']:
         print('No data found.')
+        return Response({"Error": "No data found."})
     else:
-        for calendar_list_entry in calendar_list['items']:
-            calendar_list_append.append(calendar_list_entry)
-    return Response({"summary": calendar_list_append})
+        for events_list in events['items']:
+            events_list_append.append(events_list)
+    return Response({"events": events_list_append})
