@@ -14,9 +14,10 @@ from rest_framework.response import Response
 SCOPES = ['https://www.googleapis.com/auth/calendar']
 
 
+# google_oauth() function will call when a user doesn't have user credentials and will store it in token.pkl name.
 def google_oauth():
-    """Shows basic usage of the Google Calendar API and get the user token
-    """
+
+    # Shows basic usage of the Google Calendar API and get the user token
     creds = None
     # The file token.pkl stores the user's access and refresh tokens, and is
     # created automatically when the authorization flow completes for the first
@@ -36,7 +37,9 @@ def google_oauth():
         pickle.dump(creds, open("token.pkl", "wb"))
     return creds
 
-# get token credentials
+# GoogleCalendarInitView() function will check if user credentials have in the project directory or not.
+# if not found user token.pkl file then google_oauth() function will call and create a user token.pkl file.
+# return user credentials in JSON.
 @api_view(['GET'])
 def GoogleCalendarInitView(request):
     if os.path.exists('token.pkl') == True:
@@ -47,14 +50,17 @@ def GoogleCalendarInitView(request):
         credentials_pickle = pickle.load(open("token.pkl", "rb"))
         return Response({credentials_pickle.to_json()})
 
-# get user calendar events
+
+# GoogleCalendarRedirectView() function will check if user credentials have in the project directory or not
+# if not then the message will show to the user, "message": "No data found or user credentials invalid".
+# this function will return user calendar events
 @api_view(['GET'])
 def GoogleCalendarRedirectView(request):
 
     if os.path.exists('token.pkl') == True:
         credentials_pickle = pickle.load(open("token.pkl", "rb"))
         service = build("calendar", "v3", credentials=credentials_pickle)
-        # Call the Sheets API
+        # Call the calendar API
         calendar_list = service.calendarList().list().execute()
         calendar_id = calendar_list['items'][0]['id']
         events  = service.events().list(calendarId=calendar_id).execute()
@@ -62,11 +68,11 @@ def GoogleCalendarRedirectView(request):
         events_list_append = []
         if not events['items']:
             print('No data found.')
-            return Response({"message": "No data found."})
+            return Response({"message": "No data found or user credentials invalid."})
         else:
             for events_list in events['items']:
                 events_list_append.append(events_list)
         return Response({"events": events_list_append})
     else:
-        return Response({"create token": token})
+        return Response({"message": "file doesn't exists or user credentials invalid"})
 
