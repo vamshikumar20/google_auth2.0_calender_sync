@@ -24,7 +24,7 @@ need to implement mechanism to get access_token from given
 code
 2. Once got the access_token get list of events in users calendar
 
-### Note: To run this assignment need a google account credentials which need to save in the project folder. Please read below documents and references section.
+### Note: To run this assignment need google account credentials which need to save in the project directory and add a redirect URL in your google cloud. Please read below documents and references section.
 
 ## Documents and References
 
