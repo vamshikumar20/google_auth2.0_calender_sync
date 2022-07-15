@@ -1,6 +1,6 @@
 from django.urls import path
-
 from . import views
+
 
 urlpatterns = [
     path('v1/calendar/init/', views.GoogleCalendarInitView, name='google_permission'),
