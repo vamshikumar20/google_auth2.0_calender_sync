@@ -5,18 +5,22 @@ You need to use the OAuth2 mechanism to get users calendar access. Below are det
 
 For run this project on a local machine: 
 
+- Create virtual environment
+
+https://packaging.python.org/guides/installing-using-pip-and-virtual-environments/
+
 ```sh
 pip install - r requriments.txt
 ```
 
 - Endpoint:
 ```
-/rest/v1/calendar/init/ -> GoogleCalendarInitView()
+/rest/v1/calendar/init/ -> google_calendar_init_view()
 ```
 This view should start step 1 of the OAuth. Which will prompt user for his/her credentials
 
 ```
-/rest/v1/calendar/redirect/ -> GoogleCalendarRedirectView()
+/rest/v1/calendar/redirect/ -> google_calendar_redirect_view()
 ```
 This view will do two things
 1. Handle redirect request sent by google with code for token. You
