@@ -22,6 +22,8 @@ This view should start step 1 of the OAuth. Which will prompt user for his/her c
 ```
 /rest/v1/calendar/redirect/ -> google_calendar_redirect_view()
 ```
+![](urls_result.png)
+
 This view will do two things
 1. Handle redirect request sent by google with code for token. You
 need to implement mechanism to get access_token from given
